@@ -8,10 +8,7 @@ const Product: CollectionConfig = {
     useAsTitle: 'productName',
   },
   access: {
-    create: () => true,
-    read: () => true,
-    update: () => true,
-    delete: () => true,
+    read: () => true
   },
   fields: [
     {
