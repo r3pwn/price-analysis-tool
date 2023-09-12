@@ -1,9 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 import payload from 'payload';
 import { initRedis } from '@aengz/payload-redis-cache'
 
 require('dotenv').config();
 const app = express();
+
+app.use(cors());
 
 // Redirect root to Admin panel
 app.get('/', (_, res) => {
