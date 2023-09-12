@@ -5,7 +5,7 @@ import { Endpoint } from 'payload/config';
 const Product: CollectionConfig = {
   slug: 'products',
   admin: {
-    defaultColumns: ['productName', 'prices', 'updatedAt'],
+    defaultColumns: ['productName', 'productSize', 'prices'],
     useAsTitle: 'productName',
   },
   access: {
@@ -15,6 +15,10 @@ const Product: CollectionConfig = {
     {
       name: 'productName',
       type: 'text',
+    },
+    {
+      name: 'productSize',
+      type: 'text'
     },
     {
       name: 'productIds',
@@ -48,6 +52,20 @@ const Product: CollectionConfig = {
           type: 'number',
           admin: {
             step: 0.01
+          }
+        },
+        {
+          name: 'onSale',
+          type: 'checkbox'
+        },
+        {
+          name: 'originalPrice',
+          type: 'number',
+          admin: {
+            step: 0.01,
+            condition: (data, siblingData) => {
+              return siblingData.onSale;
+            }
           }
         }
       ]
