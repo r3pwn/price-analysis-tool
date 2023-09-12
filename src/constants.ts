@@ -6,5 +6,6 @@ export const VENDORS = [
 
 export const PRODUCT_ID_TYPES = [
   "UPC",
+  "WalmartItemId",
   "TCIN"
 ]
