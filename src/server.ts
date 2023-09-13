@@ -13,7 +13,7 @@ app.get('/', (_, res) => {
   res.redirect('/admin');
 });
 
-initRedis({
+process.env.REDIS_URI && initRedis({
   redisUrl: process.env.REDIS_URI
 });
 

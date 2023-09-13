@@ -7,9 +7,11 @@ import Users from './collections/Users';
 export default buildConfig({
   serverURL: process.env.PAYLOAD_HOST,
   plugins: [
-    cachePlugin({ 
-      excludedCollections: ['users'],
-    })
+    ...(process.env.REDIS_URI ? [
+      cachePlugin({ 
+        excludedCollections: ['users'],
+      }
+    )] : [])
   ],
   admin: {
     user: Users.slug,
