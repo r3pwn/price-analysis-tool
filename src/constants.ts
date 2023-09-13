@@ -3,9 +3,3 @@ export const VENDORS = [
   "Kroger",
   "Walmart"
 ]
-
-export const PRODUCT_ID_TYPES = [
-  "UPC",
-  "WalmartItemId",
-  "TCIN"
-]

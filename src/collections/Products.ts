@@ -1,11 +1,11 @@
 import { CollectionConfig } from 'payload/types';
-import { PRODUCT_ID_TYPES, VENDORS } from '../constants';
+import { VENDORS } from '../constants';
 import { Endpoint } from 'payload/config';
 
 const Product: CollectionConfig = {
   slug: 'products',
   admin: {
-    defaultColumns: ['productName', 'productSize', 'prices'],
+    defaultColumns: ['productName', 'productSize', 'stores'],
     useAsTitle: 'productName',
   },
   access: {
@@ -21,31 +21,19 @@ const Product: CollectionConfig = {
       type: 'text'
     },
     {
-      name: 'productIds',
+      name: 'stores',
       type: 'array',
       fields: [
         {
-          name: 'idType',
-          type: 'select',
-          required: true,
-          options: PRODUCT_ID_TYPES
-        },
-        {
-          name: 'idValue',
-          type: 'text',
-          required: true
-        }
-      ]
-    },
-    {
-      name: 'prices',
-      type: 'array',
-      fields: [
-        {
-          name: 'vendor',
+          name: 'name',
           type: 'select',
           required: true,
           options: VENDORS
+        },
+        {
+          name: 'itemId',
+          type: 'text',
+          required: true
         },
         {
           name: 'price',
@@ -72,9 +60,9 @@ const Product: CollectionConfig = {
     }
   ],
   endpoints: [
-    // automatically create an API for each ID type
-    ...(PRODUCT_ID_TYPES.map((idType) => ({
-      path: `/by${idType.toLowerCase()}/:itemId`,
+    // automatically create an API for each vendor
+    ...(VENDORS.map((vendor) => ({
+      path: `/${vendor.toLowerCase()}/:itemId`,
       method: "get",
       handler: async (req, res) => {
         const { itemId } = req.params;
@@ -89,12 +77,12 @@ const Product: CollectionConfig = {
           where: {
             and: [
               {
-                'productIds.idType': {
-                  equals: idType
+                'stores.name': {
+                  equals: vendor
                 }
               },
               {
-                'productIds.idValue': {
+                'stores.itemId': {
                   equals: itemId
                 }
               }
@@ -103,7 +91,7 @@ const Product: CollectionConfig = {
         });
 
         if (products.docs?.length) {
-          res.status(200).send(products.docs);
+          res.status(200).send(products.docs[0]);
         } else {
           res.status(204).send({ error: "no product found" });
         }
