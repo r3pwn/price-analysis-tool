@@ -38,6 +38,7 @@ const Product: CollectionConfig = {
         {
           name: 'price',
           type: 'number',
+          required: true,
           admin: {
             step: 0.01
           }
@@ -90,8 +91,15 @@ const Product: CollectionConfig = {
           }
         });
 
+        const firstProduct = products.docs[0];
+
+        if (firstProduct.stores?.length) {
+          // sort the stores by price, lowest to highest
+          firstProduct.stores = firstProduct.stores.sort((a, b) => a.price - b.price);
+        }
+
         if (products.docs?.length) {
-          res.status(200).send(products.docs[0]);
+          res.status(200).send(firstProduct);
         } else {
           res.status(204).send({ error: "no product found" });
         }
